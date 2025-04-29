@@ -1,31 +1,37 @@
----
-title: Set up your environment
-description: Learn how to set up your development environment to start building with Expo.
-hideTOC: true
----
 
-import { DevelopmentEnvironmentInstructions } from '~/scenes/get-started/set-up-your-environment/DevelopmentEnvironmentInstructions';
-import { DevelopmentModeForm } from '~/scenes/get-started/set-up-your-environment/DevelopmentModeForm';
-import { PlatformAndDeviceForm } from '~/scenes/get-started/set-up-your-environment/PlatformAndDeviceForm';
+import React, { useState } from "react"; import { Button } from "@/components/ui/button"; import { Card, CardContent } from "@/components/ui/card";
 
-Let's set up a local development environment for running your project on Android and iOS.
+const preguntas = [ "¿Cuál fue tu peor apodo en la escuela?", "¿Alguna vez te enamoraste de un profesor o profesora?", "¿Qué moda seguías que hoy te da vergüenza?", "¿Te copiaron o copiaste en una prueba? ¿Cómo lo hiciste?", "¿Cuál fue tu peor corte de pelo?", "¿Alguna vez mentiste para zafar de una salida?", "¿Tuviste alguna pelea tonta con un amigo que hoy te da risa?", "¿Qué era lo más ridículo que hacías para llamar la atención?", "¿Te gustaba alguien y te rechazó de forma épica?", "¿Cuál fue tu peor papelón en una fiesta?" ];
 
-## Where would you like to develop?
+const retos = [ "Contá una anécdota vergonzosa.", "Imitá a un profesor que te caía mal.", "Hablá 30 segundos con acento chileno.", "Decí una confesión que nunca contaste.", "Hacé una mini coreografía ridícula." ];
 
-We recommend using a real device to develop, since you'll get to see exactly what your users will see.
+export default function JuegoPreguntas() { const [pregunta, setPregunta] = useState(""); const [mostrarReto, setMostrarReto] = useState(false); const [reto, setReto] = useState("");
 
-<PlatformAndDeviceForm />
+const sacarPregunta = () => { const index = Math.floor(Math.random() * preguntas.length); setPregunta(preguntas[index]); setMostrarReto(false); };
 
-## How would you like to develop?
+const noResponder = () => { const index = Math.floor(Math.random() * retos.length); setReto(retos[index]); setMostrarReto(true); };
 
-Expo Go is a sandbox for trying out Expo quickly. A development build is a build of your own app that includes Expo's developer tools.
+return ( <div className="flex flex-col items-center justify-center h-screen p-4 bg-pink-50"> <h1 className="text-3xl font-bold mb-6">¿Te Acordás Cuando...?</h1>
 
-<DevelopmentModeForm />
+<Card className="w-full max-w-md mb-4 text-center">
+    <CardContent className="p-6 text-xl">
+      {pregunta || "Tocá el botón para sacar una pregunta."}
+    </CardContent>
+  </Card>
 
----
+  <div className="flex gap-4">
+    <Button onClick={sacarPregunta}>¡Sacar Pregunta!</Button>
+    {pregunta && (
+      <Button variant="secondary" onClick={noResponder}>No quiero responder</Button>
+    )}
+  </div>
 
-<DevelopmentEnvironmentInstructions />
+  {mostrarReto && (
+    <div className="mt-6 text-center text-lg font-medium text-red-600">
+      Reto: {reto}
+    </div>
+  )}
+</div>
 
-## Next step
+); }
 
-You have a project and a development environment. Now it's time to start developing.
